@@ -1,4 +1,3 @@
-
 name: Build Windows app
 
 on:
@@ -23,15 +22,20 @@ jobs:
 
       - name: Build distributable
         run: gradle createDistributable --no-daemon --stacktrace
-              - name: Show jpackage error logs
+
+      - name: Show jpackage error logs
         if: always()
         shell: pwsh
         run: |
-          Get-ChildItem build/compose/logs/createDistributable -File |
-            ForEach-Object {
-              Write-Host "===== $($_.Name) ====="
-              Get-Content $_.FullName
-            }
+          if (Test-Path "build/compose/logs/createDistributable") {
+            Get-ChildItem "build/compose/logs/createDistributable" -File |
+              ForEach-Object {
+                Write-Host "===== $($_.Name) ====="
+                Get-Content $_.FullName
+              }
+          } else {
+            Write-Host "Log directory not found"
+          }
 
       - name: Zip app
         shell: pwsh
