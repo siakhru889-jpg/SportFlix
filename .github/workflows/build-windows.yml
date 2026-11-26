@@ -23,6 +23,15 @@ jobs:
 
       - name: Build distributable
         run: gradle createDistributable --no-daemon --stacktrace
+              - name: Show jpackage error logs
+        if: always()
+        shell: pwsh
+        run: |
+          Get-ChildItem build/compose/logs/createDistributable -File |
+            ForEach-Object {
+              Write-Host "===== $($_.Name) ====="
+              Get-Content $_.FullName
+            }
 
       - name: Zip app
         shell: pwsh
