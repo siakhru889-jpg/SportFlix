@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -24,22 +23,19 @@ jobs:
       - name: Build distributable
         run: gradle createDistributable --no-daemon --stacktrace
 
-      - name: Show jpackage error logs
-        if: always()
+      - name: Verify Java runtime
         shell: pwsh
         run: |
-          if (Test-Path "build/compose/logs/createDistributable") {
-            Get-ChildItem "build/compose/logs/createDistributable" -File |
-              ForEach-Object {
-                Write-Host "===== $($_.Name) ====="
-                Get-Content $_.FullName
-              }
-          } else {
-            Write-Host "Log directory not found"
+          $java = "build/compose/binaries/main/app/SportflixIPTV/runtime/bin/java.exe"
+          if (!(Test-Path $java)) {
+            Write-Host "ERROR: java.exe is missing!"
+            Get-ChildItem "build/compose/binaries/main/app/SportflixIPTV/runtime/bin" -Force
+            exit 1
           }
+          Write-Host "Java runtime OK"
 
       - uses: actions/upload-artifact@v4
         with:
           name: SportflixIPTV-Windows
-          path: build/compose/binaries/main/app/
+          path: build/compose/binaries/main/app/SportflixIPTV/
           if-no-files-found: error
