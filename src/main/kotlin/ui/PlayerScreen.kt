@@ -143,7 +143,7 @@ fun PlayerScreen(req: PlayRequest, onClose: () -> Unit) {
         opts.add(":http-user-agent=$ua")
         entry.headers["Referer"]?.let { opts.add(":http-referrer=$it") }
         opts.add(":network-caching=2000")
-        opts.add(":vout=wingdi")
+        opts.add(":vout=direct3d11")
         player.media().play(url, *opts.toTypedArray())
         player.audio().setVolume((volume * 100).toInt())
         applyScale(scaleMode)
