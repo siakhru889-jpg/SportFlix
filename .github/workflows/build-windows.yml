@@ -37,11 +37,7 @@ jobs:
             Write-Host "Log directory not found"
           }
 
-      - name: Zip app
-        shell: pwsh
-        run: Compress-Archive -Path build/compose/binaries/main/app/SportflixIPTV/* -DestinationPath SportflixIPTV-Windows.zip
-
       - uses: actions/upload-artifact@v4
-        with:
-          name: SportflixIPTV-Windows
-          path: SportflixIPTV-Windows.zip
+  with:
+    name: SportflixIPTV-Windows
+    path: build/compose/binaries/main/app/
