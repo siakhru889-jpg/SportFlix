@@ -1,3 +1,4 @@
+```yaml
 name: Build Windows app
 
 on:
@@ -8,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -38,6 +40,7 @@ jobs:
           }
 
       - uses: actions/upload-artifact@v4
-  with:
-    name: SportflixIPTV-Windows
-    path: build/compose/binaries/main/app/
+        with:
+          name: SportflixIPTV-Windows
+          path: build/compose/binaries/main/app/
+          if-no-files-found: error
